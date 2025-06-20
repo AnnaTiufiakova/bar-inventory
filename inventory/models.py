@@ -21,7 +21,13 @@ class Item(models.Model):
         ("bottle", "bottle"),
         ("units", "units"),
     ]
-    units = models.CharField(max_length=20, choices=UNIT_CHOICES, verbose_name="Units:", null=False, blank=False)
+    units = models.CharField(
+        max_length=20,
+        choices=UNIT_CHOICES,
+        verbose_name="Units:",
+        null=False,
+        blank=False,
+    )
     cost_per_unit = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -32,11 +38,12 @@ class Item(models.Model):
     empty_bottle = models.FloatField(
         null=True, blank=True, verbose_name="Empty bottle weight:"
     )
-    image = models.ImageField(upload_to='item_images/', null=True, blank=True, verbose_name="Upload image")
+    image = models.ImageField(upload_to="item_images/", null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date added")
 
     def __str__(self):
         return self.name
+
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -44,8 +51,11 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
 
+
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, related_name="ingredients", on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, related_name="ingredients", on_delete=models.CASCADE
+    )
     item = models.ForeignKey("Item", on_delete=models.CASCADE)
     UNIT_CHOICES_2 = [
         ("ml", "ml"),
@@ -53,7 +63,7 @@ class RecipeIngredient(models.Model):
         ("units", "units"),
     ]
     unit = models.CharField(max_length=10, choices=UNIT_CHOICES_2)
-    quantity = models.FloatField() #in ml, gr, units
+    quantity = models.FloatField()  # in ml, gr, units
 
     def __str__(self):
         return f"{self.quantity} {self.unit} of {self.item.name} in {self.recipe.name}"

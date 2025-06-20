@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
-export default function CategoryList(onEdit) {
+export default function CategoryList() {
   const [cats, setCats] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState("");
 
   useEffect(() => {
     axios
@@ -21,15 +22,51 @@ export default function CategoryList(onEdit) {
     }
   };
 
+  const handleEditClick = (cat) => {
+    setEditingId(cat.id);
+    setEditName(cat.name);
+  };
+
+  const handleSave = () => {
+    axios
+      .put(`http://localhost:8000/api/categories/${editingId}/`, { name: editName })
+      .then((res) => {
+        setCats((prev) =>
+          prev.map((cat) => (cat.id === editingId ? res.data : cat))
+        );
+        setEditingId(null);
+        setEditName("");
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setEditName("");
+  };
+
   return (
     <div>
-      <h2>Categories</h2>
       <ul>
         {cats.map((c) => (
           <li key={c.id}>
-            {c.name} &nbsp;
-            <button onClick={() => onEdit(c)}>Edit</button>
-            <button onClick={() => handleDelete(c.id)}>Delete</button>
+            {editingId === c.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <button onClick={handleSave}>Save</button>
+                <button onClick={handleCancel}>Cancel</button>
+              </>
+            ) : (
+              <>
+                {c.name} &nbsp;
+                <button onClick={() => handleEditClick(c)}>Edit</button>
+                <button onClick={() => handleDelete(c.id)}>Delete</button>
+              </>
+            )}
           </li>
         ))}
       </ul>

@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Item, Category, Recipe
 from .forms import ItemForm
 from rest_framework import viewsets
-from rest_framework import generics
 from .serializers import CategorySerializer, ItemSerializer, RecipeSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 def item_list(request):
@@ -50,7 +50,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
-class RecipeListCreateView(generics.ListCreateAPIView):
+class RecipeListCreateView(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer

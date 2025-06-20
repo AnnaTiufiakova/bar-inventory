@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import ItemList from "../ItemCategory/ItemList";
 import CategoryList from "../ItemCategory/CategoryList";
 import CategoryForm from "../ItemCategory/CategoryForm";
-import CategoryEditForm from "../ItemCategory/CategoryEditForm";
 import ItemForm from "../ItemCategory/ItemForm";
-import ItemEditForm from "../ItemCategory/ItemEditForm";
 import './BarItem.css';
 
 export default function BarItem() {
-  const [editingItemId, setEditingItemId] = useState(null);
-  const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [showCategories, setShowCategories] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showItemForm, setShowItemForm] = useState(false);
   const [refreshItems, setRefreshItems] = useState(false);
+
   const handleItemCreated = () => {
-    setRefreshItems((prev) => !prev); // toggle to trigger re-fetch
-    setShowItemForm(false); // optionally hide the form
+    setRefreshItems((prev) => !prev);
+    setShowItemForm(false);
   };
 
   const toggleCategories = () => setShowCategories(!showCategories);
@@ -41,16 +38,9 @@ export default function BarItem() {
         </button>
         {showCategories && (
           <div className="category-section">
-            <h3>Categories</h3>
-            <CategoryList onEdit={setEditingCategoryId} />
-            {editingCategoryId ? (
-              <CategoryEditForm
-                categoryId={editingCategoryId}
-                onClose={() => setEditingCategoryId(null)}
-              />
-            ) : (
-              <CategoryForm />
-            )}
+            <h2>Categories</h2>
+            <CategoryList />
+            <CategoryForm />
           </div>
         )}
       </div>
@@ -69,21 +59,19 @@ export default function BarItem() {
             {showItemForm ? "Save Item" : "Create Item"}
           </button>
         </div>
-
       </div>
 
       {/* === Item Form (conditionally visible) === */}
-      {showItemForm && !editingItemId && (<ItemForm id="item-create-form" onCreated={handleItemCreated} />)}
+      {showItemForm && (
+        <ItemForm id="item-create-form" onCreated={handleItemCreated} />
+      )}
 
-      {/* === Item List + Edit Form === */}
+      {/* === Item List with Inline Editing === */}
       <div className="item-section">
-        <ItemList searchTerm={searchTerm} onEdit={setEditingItemId} refreshTrigger={refreshItems} />
-        {editingItemId && (
-          <ItemEditForm
-            itemId={editingItemId}
-            onClose={() => setEditingItemId(null)}
-          />
-        )}
+        <ItemList
+          searchTerm={searchTerm}
+          refreshTrigger={refreshItems}
+        />
       </div>
     </div>
   );
