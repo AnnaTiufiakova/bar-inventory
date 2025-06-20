@@ -1,0 +1,83 @@
+
+*
+{
+  box-sizing: border-box;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px; /* includes padding now */
+  background-color: #27100A;
+  padding: 20px;
+  min-height: 100vh;
+  color: white;
+  z-index: 1000;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 20px 0;
+  padding: 10px 20px;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sidebar a:hover {
+  background-color: #27100A;
+  padding: 10px 20px;
+  display: block;
+}
+
+.main-content {
+  margin-left: 220px;
+  padding: 30px;
+  flex-grow: 1;
+  background-image: url('/public/images/bg1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  overflow-y: auto;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar.collapsed + .main-content {
+  margin-left: 60px;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  z-index: 2000;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #f9f9f9;
+  cursor: pointer;
+}

@@ -1,0 +1,95 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #27100A;
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 1000;
+  width: 220px;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar.collapsed h2,
+.sidebar.collapsed ul li a {
+  display: none;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  background-color: #27100A;
+}
+
+.active-link {
+  color: #FFC90E !important;
+  background-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    position: fixed;
+    z-index: 1001;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    /* Don’t reserve space for the sidebar on small screens */
+
+  }
+
+  .menu-toggle {
+    display: block;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    z-index: 1002;
+    color: white;
+  }
+}
+
+/* Hide the menu toggle button on larger screens */
+@media (min-width: 769px) {
+  .menu-toggle {
+    /*display: none;*/
+  }
+
+  .sidebar.collapsed {
+    width: 60px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+  }
+}
